@@ -18,6 +18,7 @@ after_success:
   - mvn clean test jacoco:report coveralls:report
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
+  - [[ $TRAVIS_PULL_REQUEST == 'false' ]] && [[ $TRAVIS_TAG == '' ]] && mvn deploy -DskipTests --settings ./settings.xml
   - ./send.sh success $WEBHOOK_URL
 
 after_failure:
