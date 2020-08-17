@@ -3,8 +3,8 @@ dist: trusty
 jdk:
 - openjdk11
 before_install:
-- openssl aes-256-cbc -K $encrypted_4f0d00631887_key -iv $encrypted_4f0d00631887_iv
-  -in .travis/gpg.asc.enc -out .travis/gpg.asc -d
+- openssl aes-256-cbc -K $encrypted_044baa266d1a_key -iv $encrypted_044baa266d1a_iv
+  -in gpg.asc.enc -out gpg.asc -d
 - chmod +x mvnw
 addons:
   sonarcloud:
