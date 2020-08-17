@@ -1,27 +1,34 @@
 language: java
 dist: trusty
-
 jdk:
-  - openjdk11
-
+- openjdk11
 before_install:
-  - chmod +x mvnw
-
+- openssl aes-256-cbc -K $encrypted_4f0d00631887_key -iv $encrypted_4f0d00631887_iv
+  -in gpg.asc.enc -out .travis/gpg.asc -d
+- chmod +x mvnw
 addons:
   sonarcloud:
-    organization: "kaellybot"
-    token: $SONAR_TOKEN
+    organization: kaellybot
+    token: "$SONAR_TOKEN"
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
-
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+deploy:
+- skip_cleanup: true
+  provider: script
+  script: "./deploy.sh"
+  on:
+    branch: master
+- skip_cleanup: true
+  provider: script
+  script: "./deploy.sh"
+  on:
+    tags: true
 after_success:
-  - mvn clean test jacoco:report coveralls:report
-  - mvn deploy -DskipTests --settings ./settings.xml
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh success $WEBHOOK_URL
-
+- mvn clean test jacoco:report coveralls:report
+- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+- chmod +x send.sh
+- "./send.sh success $WEBHOOK_URL"
 after_failure:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh failure $WEBHOOK_URL
+- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+- chmod +x send.sh
+- "./send.sh failure $WEBHOOK_URL"
