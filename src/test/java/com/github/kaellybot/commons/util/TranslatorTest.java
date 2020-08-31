@@ -6,8 +6,6 @@ import com.github.kaellybot.commons.model.entity.MultilingualEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,74 +25,9 @@ class TranslatorTest {
     private static final String NO_EXISTING_TEST_KEY = "translator.test_not_found";
     private static final String TEST_VALUE = "Test";
 
-    private static final Language EXISTING_LANGUAGE = new Language(){
-
-        @Override
-        public String getFullName() {
-            return "TEST";
-        }
-
-        @Override
-        public String getFileName() {
-            return "label_TEST.properties";
-        }
-
-        @Override
-        public String getAbbreviation() {
-            return "TEST";
-        }
-
-        @Override
-        public boolean isDisplayed() {
-            return false;
-        }
-    };
-
-    private static final Language NO_EXISTING_LANGUAGE = new Language(){
-
-        @Override
-        public String getFullName() {
-            return null;
-        }
-
-        @Override
-        public String getFileName() {
-            return null;
-        }
-
-        @Override
-        public String getAbbreviation() {
-            return null;
-        }
-
-        @Override
-        public boolean isDisplayed() {
-            return false;
-        }
-    };
-
-    private static final Language NOT_REGISTERED_LANGUAGE = new Language(){
-
-        @Override
-        public String getFullName() {
-            return null;
-        }
-
-        @Override
-        public String getFileName() {
-            return null;
-        }
-
-        @Override
-        public String getAbbreviation() {
-            return null;
-        }
-
-        @Override
-        public boolean isDisplayed() {
-            return false;
-        }
-    };
+    private static final Language EXISTING_LANGUAGE = Language.EN;
+    private static final Language NO_EXISTING_LANGUAGE = Language.FR;
+    private static final Language NOT_REGISTERED_LANGUAGE = Language.ES;
 
     @Spy
     private Translator translator;
@@ -189,14 +122,5 @@ class TranslatorTest {
     void getInternalLabelWithNoRegisteredLanguage()
     {
         assertThat(translator.getInternalLabel(NOT_REGISTERED_LANGUAGE, TEST_KEY)).isNotNull().isEqualTo(TEST_KEY);
-    }
-
-    @ParameterizedTest
-    @EnumSource(Translator.LanguageEnum.class)
-    void isLanguageFieldsFilled(Language language){
-        assertThat(language.getFullName()).isNotNull().isNotEmpty();
-        assertThat(language.getAbbreviation()).isNotNull().isNotEmpty();
-        assertThat(language.getFileName()).isNotNull().isNotEmpty();
-        assertThat(language.isDisplayed()).isTrue();
     }
 }

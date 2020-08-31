@@ -3,7 +3,6 @@ package com.github.kaellybot.commons.service;
 import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.commons.util.Translator;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,63 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @ExtendWith(MockitoExtension.class)
 class LanguageServiceTest {
 
-    private static final Language EXISTING_LANGUAGE = new Language(){
+    private static final Language EXISTING_LANGUAGE = Language.EN;
 
-        @Override
-        public String getFullName() {
-            return "EXISTING_LANGUAGE";
-        }
-
-        @Override
-        public String getFileName() {
-            return "label_TEST.properties";
-        }
-
-        @Override
-        public String getAbbreviation() {
-            return "EXISTING_LANGUAGE";
-        }
-
-        @Override
-        public boolean isDisplayed() {
-            return true;
-        }
-    };
-
-    private static final Language NO_DISPLAYED_LANGUAGE = new Language(){
-
-        @Override
-        public String getFullName() {
-            return "NO_DISPLAYED_LANGUAGE";
-        }
-
-        @Override
-        public String getFileName() {
-            return "label_TEST.properties";
-        }
-
-        @Override
-        public String getAbbreviation() {
-            return "NO_DISPLAYED_LANGUAGE";
-        }
-
-        @Override
-        public boolean isDisplayed() {
-            return false;
-        }
-    };
+    private static final Language NO_DISPLAYED_LANGUAGE = Language.APRIL_FOOL;
 
     @Spy
     private Translator translator;
 
     @InjectMocks
     private LanguageService languageService;
-
-    @BeforeEach
-    void beforeEach(){
-        translator.register(EXISTING_LANGUAGE);
-        translator.register(NO_DISPLAYED_LANGUAGE);
-    }
 
     @Test
     void findByFullNamePassingCaseTest(){

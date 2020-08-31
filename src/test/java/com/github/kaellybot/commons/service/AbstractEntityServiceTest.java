@@ -25,28 +25,7 @@ import java.util.Map;
 class AbstractEntityServiceTest {
 
     private static final String DEFAULT_LABEL = "DEFAULT_LABEL";
-    private static final Language DEFAULT_LANGUAGE = new Language(){
-
-        @Override
-        public String getFullName() {
-            return "TEST";
-        }
-
-        @Override
-        public String getFileName() {
-            return "label_TEST.properties";
-        }
-
-        @Override
-        public String getAbbreviation() {
-            return "TEST";
-        }
-
-        @Override
-        public boolean isDisplayed() {
-            return false;
-        }
-    };
+    private static final Language DEFAULT_LANGUAGE = Language.EN;
 
     private static final List<TestEntity> matchingEntities = List.of(
             TestEntity.builder().labels(Map.of(DEFAULT_LANGUAGE, "DEFAULT_LABEL1")).build(),

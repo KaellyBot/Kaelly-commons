@@ -1,23 +1,32 @@
 package com.github.kaellybot.commons.model.constants;
 
-public interface Language {
+import lombok.AllArgsConstructor;
 
-    /**
-     * @return The full name of the language in its language
-     */
-    String getFullName();
+@AllArgsConstructor
+public enum Language {
 
-    /**
-     * @return The file name of the labels used for the language
-     */
-    String getFileName();
+    FR("Français", "FR", true),
+    EN("English", "EN", true),
+    ES("Español", "ES", true),
+    APRIL_FOOL("Français", "FR", false);
 
-    /**
-     * @return The abbreviation usually used for accept-language header
-     */
-    String getAbbreviation();
-    /**
-     * @return True if the language can used by an end-user
-     */
-    boolean isDisplayed();
+    private final String fullName;
+    private final String abbreviation;
+    private final boolean isDisplayed;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getFileName() {
+        return "label_" + getAbbreviation() + ".properties";
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public boolean isDisplayed() {
+        return isDisplayed;
+    }
 }

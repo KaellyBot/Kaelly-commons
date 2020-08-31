@@ -4,9 +4,7 @@ import com.github.kaellybot.commons.model.constants.Error;
 import com.github.kaellybot.commons.model.constants.Language;
 import com.github.kaellybot.commons.model.constants.MultilingualEnum;
 import com.github.kaellybot.commons.model.entity.MultilingualEntity;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,19 +15,18 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-@Component
 @Slf4j
-public class Translator {
+public abstract class Translator {
     protected Map<Language, Properties> labels;
     protected final Random random;
 
     public Translator(){
         labels = new ConcurrentHashMap<>();
         random = new Random();
-        Stream.of(LanguageEnum.values()).forEach(this::register);
+        Stream.of(Language.values()).forEach(this::register);
     }
 
-    public void register(Language language){
+    protected void register(Language language){
         try(InputStream file = getClass().getResourceAsStream("/" + language.getFileName())) {
             loadLabels(language, file);
         } catch (NullPointerException e) {
@@ -98,36 +95,5 @@ public class Translator {
             value = value.replaceFirst("\\{}", arg.toString());
 
         return value;
-    }
-
-    @AllArgsConstructor
-    protected enum LanguageEnum implements Language {
-        FR("Français", "FR", true),
-        EN("English", "EN", true),
-        ES("Español", "ES", true);
-
-        private final String fullName;
-        private final String abbreviation;
-        private final boolean isDisplayed;
-
-        @Override
-        public String getFullName() {
-            return fullName;
-        }
-
-        @Override
-        public String getFileName() {
-            return "label_" + getAbbreviation() + ".properties";
-        }
-
-        @Override
-        public String getAbbreviation() {
-            return abbreviation;
-        }
-
-        @Override
-        public boolean isDisplayed() {
-            return isDisplayed;
-        }
     }
 }
