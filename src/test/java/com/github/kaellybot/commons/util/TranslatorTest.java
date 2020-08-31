@@ -1,6 +1,7 @@
 package com.github.kaellybot.commons.util;
 
 import com.github.kaellybot.commons.model.constants.*;
+import com.github.kaellybot.commons.model.constants.Error;
 import com.github.kaellybot.commons.model.entity.MultilingualEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +41,20 @@ class TranslatorTest {
 
     @ParameterizedTest
     @EnumSource(Language.class)
+    void getRandomLabelPropertyTest(Language language)
+    {
+        assertThat(translator.getRandomLabel(language, TEST_KEY)).isNotNull().isEqualTo(TEST_VALUE);
+        assertThat(translator.getRandomLabel(language, EMPTY_TEST_KEY)).isNotNull().isEqualTo(EMPTY_TEST_KEY);
+    }
+
+    @Test
+    void getRandomLabelPropertyForNoExistingKeyTest()
+    {
+        assertThat(translator.getRandomLabel(Language.FR, NO_EXISTING_TEST_KEY)).isNotNull().isEqualTo(NO_EXISTING_TEST_KEY);
+    }
+
+    @ParameterizedTest
+    @EnumSource(Language.class)
     void getLabelEnumerationTest(Language language)
     {
         MultilingualEnum noExistingEnum = () -> TEST_KEY;
@@ -59,6 +74,15 @@ class TranslatorTest {
     {
         MultilingualEntity entity = new MultilingualEntity(TEST_KEY, Map.of(language, TEST_VALUE)){};
         assertThat(translator.getLabel(language, entity)).isNotNull().isNotEmpty().isEqualTo(TEST_VALUE);
+    }
+
+    @ParameterizedTest
+    @EnumSource(Language.class)
+    void getLabelErrorTest(Language language)
+    {
+        Error error = (translator, language1) -> translator.getLabel(language1, TEST_VALUE);
+        assertThat(translator.getLabel(language, error)).isNotNull().isNotEmpty()
+                .isEqualTo(translator.getLabel(language, TEST_VALUE));
     }
 
     @Test

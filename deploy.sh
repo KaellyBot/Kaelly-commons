@@ -15,6 +15,11 @@ if [ -z "$OSSRH_USER" ]; then
   exit 1
 fi
 
+if [ -z "$OSSRH_PASS" ]; then
+  echo "missing environment value: OSSRH_PASS" >&2
+  exit 1
+fi
+
 if [ -z "$GPG_KEY_NAME" ]; then
   echo "missing environment value: GPG_KEY_NAME" >&2
   exit 1
@@ -22,11 +27,6 @@ fi
 
 if [ -z "$GPG_PASSPHRASE" ]; then
   echo "missing environment value: GPG_PASSPHRASE" >&2
-  exit 1
-fi
-
-if [ -z "$OSSRH_PASS" ]; then
-  echo "missing environment value: OSSRH_PASS" >&2
   exit 1
 fi
 
