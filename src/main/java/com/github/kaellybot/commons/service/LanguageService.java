@@ -1,23 +1,35 @@
 package com.github.kaellybot.commons.service;
 
 import com.github.kaellybot.commons.model.constants.Language;
-import lombok.NoArgsConstructor;
+import com.github.kaellybot.commons.util.Translator;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
-@NoArgsConstructor
+@AllArgsConstructor
 public class LanguageService {
 
-    public Optional<Language> findByName(String name) {
+    private final Translator translator;
+
+    public Optional<Language> findByFullName(String name) {
         if (name == null || name.trim().isEmpty())
             return Optional.empty();
         final String NORMALIZED_NAME = StringUtils.stripAccents(name.toUpperCase().trim());
-        return Stream.of(Language.values())
-                .filter(lang -> StringUtils.stripAccents(lang.name().toUpperCase().trim())
+        return translator.getRegisteredLanguages().stream()
+                .filter(lang -> lang.isDisplayed() && StringUtils.stripAccents(lang.getFullName().toUpperCase().trim())
+                        .startsWith(NORMALIZED_NAME))
+                .findFirst();
+    }
+
+    public Optional<Language> findByAbbreviation(String name) {
+        if (name == null || name.trim().isEmpty())
+            return Optional.empty();
+        final String NORMALIZED_NAME = StringUtils.stripAccents(name.toUpperCase().trim());
+        return translator.getRegisteredLanguages().stream()
+                .filter(lang -> lang.isDisplayed() && StringUtils.stripAccents(lang.getAbbreviation().toUpperCase().trim())
                         .equals(NORMALIZED_NAME))
                 .findFirst();
     }
