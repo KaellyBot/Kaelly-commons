@@ -26,6 +26,10 @@ public class DimensionService extends AbstractEntityService<Dimension, String> {
         return dimensionRepository.findAll();
     }
 
+    public Mono<Dimension> save(Dimension dimension) {
+        return dimensionRepository.save(dimension);
+    }
+
     @Override
     protected ReactiveMongoRepository<Dimension, String> getRepository() {
         return dimensionRepository;

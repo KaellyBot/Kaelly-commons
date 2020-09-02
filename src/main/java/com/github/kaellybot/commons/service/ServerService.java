@@ -26,6 +26,10 @@ public class ServerService extends AbstractEntityService<Server, String>{
         return serverRepository.findAll();
     }
 
+    public Mono<Server> save(Server server) {
+        return serverRepository.save(server);
+    }
+
     @Override
     protected ReactiveMongoRepository<Server, String> getRepository() {
         return serverRepository;
