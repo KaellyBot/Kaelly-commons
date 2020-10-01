@@ -65,7 +65,7 @@ public abstract class Translator {
         String value = getInternalLabel(lang, property);
 
         for(Object arg : arguments)
-            value = value.replaceFirst("\\{}", arg.toString());
+            value = value.replaceFirst("\\{}", getLabelFromObject(lang, arg));
 
         return value;
     }
@@ -92,8 +92,16 @@ public abstract class Translator {
         String value = values[random.nextInt(values.length)];
 
         for(Object arg : arguments)
-            value = value.replaceFirst("\\{}", arg.toString());
+            value = value.replaceFirst("\\{}", getLabelFromObject(lang, arg));
 
         return value;
+    }
+
+    protected String getLabelFromObject(Language language, Object object){
+        if (object instanceof MultilingualEntity)
+            return getLabel(language, (MultilingualEntity) object);
+        if (object instanceof MultilingualEnum)
+            return getLabel(language, (MultilingualEnum) object);
+        return String.valueOf(object);
     }
 }
